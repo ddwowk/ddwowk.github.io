@@ -7,6 +7,7 @@ body {
     background-image: url('..//Assect/image/18743cd8ac629804ae91fbc06f622358.jpg');
     background-repeat: no-repeat;
     background-size: cover;
+    background-attachment: fixed;
 }
 
 .AoomDay {
