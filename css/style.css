@@ -4,29 +4,68 @@
     box-sizing: border-box;
 }
 body {
-    background-image: url('..//Assect/image/18743cd8ac629804ae91fbc06f622358.jpg');
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-attachment: fixed;
+    background: rgb(2,0,36);
+    background: linear-gradient(94deg, rgba(2,0,36,1) 0%, rgba(171,50,0,1) 0%, rgba(251,75,48,1) 51%, rgba(255,240,0,1) 100%);
 }
-
-.AoomDay {
-    width: 24px;
-    margin-left: auto;
-    margin-right: auto;
+header1 {
     display: flex;
-    justify-content: center;  
+    height: 10px;
+    margin: 30px 40px;
+    background-color: black;
 }
-.AoomDay img {
-    border-radius: 50%;
+.Textlink, .Botton {
+    font-family: 'Courier New', sans-serif;
+    font-size: 16px;
+    font-weight: bold;
+    padding-right: 280px;
+    color: white;
+    background-color: black;
+    border: none;
+    height: 30px;
+    border-radius: 10px;
+    text-decoration: none;
+}
+header1 {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 25px 10px;
+}
+.Logo {
+    border-radius: 100%;
+    width: 40px;
 }
 
-p {
-    -webkit-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-    font-weight: bold;
-    font-size: 3cm;
-    padding: 30px;
-    text-align: center;
+.Textlink {
+    list-style: none;
+}
+.Textlink .Botton {
+    display: inline-block;
+    padding: 0px 5px;
+    transition: all 0.3 ease 0s;
+}
+.Textlink .Botton:hover {
+    color: black;
+    background-color: white;
+}  
+.MenuB {
+    padding-left: 150px;
+    background-color: black;
+    border-radius: 10px;
+    border: none;
+    color: white;
+    padding: 10px 16px;
+    height: 35;
+    font-size: 20px;
+    cursor: pointer;
+}
+.MenuB:hover {
+    background-color: white ;
+    color: black;
+}
+header2 {
+    margin: -30px 40px 40px 40px;
+    display: flex;
+    background-color: white;
+    height: 600px;
 }
