@@ -1,0 +1,19 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+.AoomDay {
+    width: 24px;
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+    justify-content: center;  
+}
+.AoomDay img {
+    border-radius: 50%;
+}
+p {
+    padding: 30px;
+    text-align: center;
+}
