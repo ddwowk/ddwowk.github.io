@@ -3,6 +3,12 @@
     padding: 0;
     box-sizing: border-box;
 }
+body {
+    background-image: url('..//Assect/image/18743cd8ac629804ae91fbc06f622358.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
 .AoomDay {
     width: 24px;
     margin-left: auto;
@@ -13,7 +19,13 @@
 .AoomDay img {
     border-radius: 50%;
 }
+
 p {
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    font-weight: bold;
+    font-size: 3cm;
     padding: 30px;
     text-align: center;
 }
