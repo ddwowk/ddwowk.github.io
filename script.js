@@ -44,7 +44,7 @@ function handleNoClick() {
     const yesButtonWidth = yesButtonRect.width;
 
     const screenWidth = window.innerWidth;
-    const thresholdWidth = screenWidth * 0.9;
+    const thresholdWidth = screenWidth * 0.8;
 
     console.log("Current Yes button width:", yesButtonWidth);
     console.log("Threshold width (80% of screen):", thresholdWidth);
