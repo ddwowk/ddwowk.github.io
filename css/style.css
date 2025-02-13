@@ -5,7 +5,8 @@
 
   body {
     font-family: 'Prompt', sans-serif;
-    overflow: hidden;
+    overflow-y: auto;
+    overflow-x: hidden;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -18,12 +19,12 @@
     max-width: 100%;
     margin-left: auto;
     margin-right: auto;
+    background: linear-gradient(180deg, #ffe0e0, 5%, #ffcdd2, 50%, #f8bbd0);
 }
 
 .wrapper {
     height: 100vh;
     width: 100vw;
-    background: linear-gradient(180deg, #ffe0e0, 5%, #ffcdd2, 50%, #f8bbd0);
     position: fixed;
     top: 0;
     left: 0;
