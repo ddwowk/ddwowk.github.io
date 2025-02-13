@@ -50,7 +50,7 @@ function handleNoClick() {
     console.log("Threshold width (80% of screen):", thresholdWidth);
 
 
-    if (yesButtonWidth >= thresholdWidth) {
+    if (yesButtonWidth >= 10000) {
         noButton.style.display = 'none';
     }
 
