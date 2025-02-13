@@ -27,24 +27,33 @@ function handleNoClick() {
     const noButton = document.querySelector(".no");
     const yesButton = document.querySelector(".yes");
     const imageElement = document.querySelector(".image img");
-    const buttonsContainer = document.querySelector(".buttons"); // Define buttonsContainer here, inside the function
-    console.log("Yes button element:", yesButton);
+    const buttonsContainer = document.querySelector(".buttons");
+
     const randomIndex = Math.floor(Math.random() * message.length);
     noButton.textContent = message[randomIndex];
     imageElement.src = "https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExbmRrb285Zm04dHNhemxzbnUyc3FzYWNybzA0eDYyZDJyNDN2bm9pOSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/QlQdLBS70XJcZY1fLF/giphy.gif";
     const currentSize = parseFloat(window.getComputedStyle(yesButton).fontSize);
-    console.log("Current font size of Yes button:", currentSize);
     const newSize = currentSize * 1.5;
-    console.log("New font size to be set:", newSize);
-    yesButton.style.fontSize = `${newSize}px`;
-    console.log("Font size of Yes button set to:", yesButton.style.fontSize);
+
     if (newSize > 15000) {
         newSize = 15000;
     }
     yesButton.style.fontSize = `${newSize}px`;
-    if (newSize >= 13636) {
+
+    const yesButtonRect = yesButton.getBoundingClientRect();
+    const yesButtonWidth = yesButtonRect.width;
+
+    const screenWidth = window.innerWidth;
+    const thresholdWidth = screenWidth * 0.8;
+
+    console.log("Current Yes button width:", yesButtonWidth);
+    console.log("Threshold width (80% of screen):", thresholdWidth);
+
+
+    if (yesButtonWidth >= thresholdWidth) {
         noButton.style.display = 'none';
     }
+
     buttonsContainer.style.flexDirection = 'column';
     buttonsContainer.style.alignItems = 'center';
 }
@@ -52,7 +61,7 @@ function handleYesClick() {
     window.location.href = "yes.html"
 }
 
-document.addEventListener('DOMContentLoaded', function() { 
+document.addEventListener('DOMContentLoaded', function() {
     const noButton = document.querySelector(".no");
     noButton.addEventListener("click", handleNoClick);
 
