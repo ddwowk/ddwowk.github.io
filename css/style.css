@@ -384,8 +384,8 @@
   }
 
   .c-smileyButton__hoverListener:nth-child(1) {
-      width: 150%;
-      height: 250%;
+      width: 50%;
+      height: 50%;
       -webkit-user-select: auto;
       -moz-user-select: auto;
       -ms-user-select: auto;
@@ -393,8 +393,8 @@
   }
 
   .c-smileyButton__hoverListener:nth-child(2) {
-      width: 120%;
-      height: 180%;
+      width: 20%;
+      height: 80%;
       -webkit-user-select: auto;
       -moz-user-select: auto;
       -ms-user-select: auto;
