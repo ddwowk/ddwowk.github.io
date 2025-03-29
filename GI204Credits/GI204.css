@@ -1,3 +1,5 @@
+--- START OF FILE GI204.css ---
+
 * {
     margin: 0;
     padding: 0;
@@ -415,7 +417,6 @@ body {
     border-color: #a54238;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
-
 
 
 .button-text-name {
