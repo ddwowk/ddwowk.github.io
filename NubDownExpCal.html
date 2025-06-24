@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EXP Calculator & Table</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #6c5ce7;
+            --secondary-color: #a29bfe;
+            --background-gradient-start: #1e1e2d;
+            --background-gradient-end: #2d2d3d;
+            --container-color: #252535;
+            --text-color: #e0e0e0;
+            --text-muted-color: #a0a0b0;
+            --border-color: #4a4a5a;
+            --success-color: #00b894;
+            --danger-color: #ff7675;
+            --accent-glow: rgba(108, 92, 231, 0.4);
+        }
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Sarabun', sans-serif;
+            background: linear-gradient(135deg, var(--background-gradient-start), var(--background-gradient-end));
+            color: var(--text-color);
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            margin: 0;
+            padding: 1.5rem;
+            animation: fadeInBody 0.8s ease-in-out;
+        }
+        .app-container {
+            background-color: var(--container-color);
+            padding: 2.5rem;
+            border-radius: 20px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+            width: 100%;
+            max-width: 800px;
+            text-align: center;
+            border: 1px solid var(--border-color);
+        }
+        .nav-menu {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 2.5rem;
+            background-color: rgba(0,0,0,0.2);
+            border-radius: 12px;
+            padding: 6px;
+        }
+        .nav-menu .nav-item {
+            flex: 1;
+            padding: 12px 15px;
+            text-decoration: none;
+            color: var(--text-muted-color);
+            font-weight: 600;
+            border-radius: 10px;
+            transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+            cursor: pointer;
+            position: relative;
+        }
+        .nav-menu .nav-item.active {
+            color: white;
+            background-color: var(--primary-color);
+            box-shadow: 0 5px 15px var(--accent-glow);
+            transform: translateY(-2px);
+        }
+        h1 {
+            color: #ffffff;
+            margin-bottom: 2.5rem;
+            font-weight: 700;
+            font-size: 2rem;
+            letter-spacing: 1px;
+        }
+        .input-group, .input-section {
+            margin-bottom: 1.5rem;
+            text-align: left;
+            position: relative;
+        }
+        label {
+            display: block;
+            margin-bottom: 0.75rem;
+            color: var(--text-muted-color);
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+        input[type="number"] {
+            width: 100%;
+            padding: 14px 18px;
+            background-color: #1e1e2d;
+            border: 2px solid var(--border-color);
+            border-radius: 10px;
+            box-sizing: border-box;
+            font-size: 1rem;
+            font-family: 'Sarabun', sans-serif;
+            color: var(--text-color);
+            transition: all 0.3s ease;
+        }
+        input[type="number"]::placeholder {
+            color: var(--text-muted-color);
+            opacity: 0.6;
+        }
+        input[type="number"]:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 4px var(--accent-glow);
+        }
+        button {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-family: 'Sarabun', sans-serif;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 20px rgba(108, 92, 231, 0.3);
+        }
+        button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(108, 92, 231, 0.5);
+        }
+        .result {
+            margin-top: 2rem;
+            padding: 1.5rem 2rem;
+            background-color: rgba(0,0,0,0.15);
+            border-radius: 12px;
+            text-align: left;
+            line-height: 1.8;
+            border-left: 5px solid var(--border-color);
+            word-wrap: break-word;
+            animation: slideUpFadeIn 0.5s ease-out;
+        }
+        .result p { margin: 0.8rem 0; }
+        .result strong { color: var(--secondary-color); font-weight: 600; }
+        .result .highlight { font-size: 1.4em; color: white; }
+        .view { display: none; }
+        .view.active { display: block; animation: viewFadeIn 0.6s ease; }
+        #table-view { max-width: 100%; }
+        .table-view-input .input-section {
+            display: flex;
+            gap: 1rem;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .table-view-input button { width: auto; padding: 14px 30px; }
+        #result-placeholder {
+            text-align: center;
+            color: var(--text-muted-color);
+            padding: 3rem;
+            background-color: rgba(0,0,0,0.15);
+            border-radius: 12px;
+        }
+        .table-container {
+            max-height: 60vh;
+            overflow: auto;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            background-color: #1e1e2d;
+        }
+        #result-table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 600px;
+        }
+        #result-table th, #result-table td {
+            padding: 14px 18px;
+            text-align: right;
+            border-bottom: 1px solid var(--border-color);
+            white-space: nowrap;
+        }
+        #result-table thead th {
+            background-color: #252535;
+            color: #ffffff;
+            position: sticky;
+            top: 0;
+            z-index: 1;
+            text-align: center;
+            font-weight: 600;
+        }
+        #result-table tbody tr { transition: background-color 0.2s ease; }
+        #result-table tbody tr:last-child td { border-bottom: none; }
+        #result-table tbody tr:hover { background-color: #3d3d4d; }
+        #result-table td:first-child { text-align: center; }
+
+        @media (max-width: 600px) {
+            body { padding: 1rem; }
+            .app-container { padding: 1.5rem; }
+            h1 { font-size: 1.6rem; }
+            .nav-menu .nav-item { font-size: 0.9rem; padding: 10px; }
+            .table-view-input .input-section { flex-direction: column; }
+            .table-view-input button { width: 100%; }
+        }
+
+        @keyframes fadeInBody { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes viewFadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes slideUpFadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <nav class="nav-menu">
+            <div id="nav-calculator" class="nav-item active" onclick="showView('calculator')">เครื่องคำนวณ</div>
+            <div id="nav-table" class="nav-item" onclick="showView('table')">ตาราง EXP</div>
+        </nav>
+
+        <div id="calculator-view" class="view active">
+            <h1>คำนวณ EXP เพื่อเลเวลอัพ</h1>
+            <div class="input-group">
+                <label for="currentLevel">เลเวลปัจจุบัน (1-99)</label>
+                <input type="number" id="currentLevel" min="1" max="99" placeholder="เช่น 50">
+            </div>
+            <div class="input-group">
+                <label for="currentExp">EXP ที่มีอยู่</label>
+                <input type="number" id="currentExp" min="0" placeholder="เช่น 150000">
+            </div>
+            <div class="input-group">
+                <label for="expPerActionCalc">EXP ที่ได้รับต่อครั้ง</label>
+                <input type="number" id="expPerActionCalc" min="1" placeholder="เช่น 2500">
+            </div>
+            <button onclick="calculateExp()">คำนวณ</button>
+            <div id="result-wrapper"></div>
+        </div>
+
+        <div id="table-view" class="view">
+            <h1>ตารางคำนวณ EXP</h1>
+            <div class="table-view-input">
+                <div class="input-section">
+                    <input type="number" id="expPerActionTable" min="1" placeholder="ใส่ EXP ที่ได้รับต่อครั้ง">
+                    <button onclick="generateTable()">สร้างตาราง</button>
+                </div>
+            </div>
+            <div id="result-container">
+                <p id="result-placeholder">กรอกค่า EXP แล้วกด "สร้างตาราง"</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showView(viewName) {
+            const views = document.querySelectorAll('.view');
+            const navItems = document.querySelectorAll('.nav-item');
+            views.forEach(v => v.classList.remove('active'));
+            navItems.forEach(n => n.classList.remove('active'));
+
+            document.getElementById(`${viewName}-view`).classList.add('active');
+            document.getElementById(`nav-${viewName}`).classList.add('active');
+        }
+
+        function calculateExp() {
+            const currentLevel = parseInt(document.getElementById('currentLevel').value);
+            const currentExp = parseInt(document.getElementById('currentExp').value);
+            const expPerAction = parseInt(document.getElementById('expPerActionCalc').value);
+            const resultWrapper = document.getElementById('result-wrapper');
+            
+            let resultHTML;
+            let borderColor = 'var(--danger-color)';
+
+            if (isNaN(currentLevel) || isNaN(currentExp) || isNaN(expPerAction) || expPerAction <= 0 || currentLevel < 1 || currentLevel >= 100) {
+                resultHTML = '<p style="text-align: center; color: var(--danger-color);">กรุณากรอกข้อมูลให้ถูกต้อง</p>';
+            } else {
+                const expForNextLevel = Math.pow(currentLevel, 2) * 100;
+                if (currentExp >= expForNextLevel) {
+                    borderColor = 'var(--success-color)';
+                    resultHTML = `<p style="text-align: center; color: var(--success-color);">ยินดีด้วย! คุณสามารถอัพเลเวลได้เลย ✨</p>`;
+                } else {
+                    const expNeeded = expForNextLevel - currentExp;
+                    const actionsNeeded = Math.ceil(expNeeded / expPerAction);
+                    const totalExpGained = actionsNeeded * expPerAction;
+                    const leftoverExp = (currentExp + totalExpGained) - expForNextLevel;
+                    borderColor = 'var(--primary-color)';
+                    resultHTML = `
+                        <p>EXP สำหรับ LV. <strong>${currentLevel + 1}</strong>: <strong>${expForNextLevel.toLocaleString()}</strong></p>
+                        <p>EXP ที่ยังขาด: <strong>${expNeeded.toLocaleString()}</strong></p>
+                        <hr style="border: none; border-top: 1px solid var(--border-color); margin: 1rem 0;">
+                        <p>ต้องทำอีก: <strong class="highlight">${actionsNeeded.toLocaleString()} ครั้ง</strong></p>
+                        <p>EXP ที่เหลือ/เกิน: <strong>${leftoverExp.toLocaleString()}</strong></p>
+                    `;
+                }
+            }
+            resultWrapper.innerHTML = `<div class="result" style="border-left-color: ${borderColor};">${resultHTML}</div>`;
+        }
+
+        function generateTable() {
+            const expPerAction = parseInt(document.getElementById('expPerActionTable').value);
+            const resultContainer = document.getElementById('result-container');
+
+            if (isNaN(expPerAction) || expPerAction <= 0) {
+                resultContainer.innerHTML = '<p id="result-placeholder" style="color: var(--danger-color);">กรุณาใส่ค่า EXP ที่ได้รับเป็นจำนวนเต็มบวก</p>';
+                return;
+            }
+
+            let tableHTML = `
+                <div class="table-container">
+                    <table id="result-table">
+                        <thead>
+                            <tr>
+                                <th>เลเวล</th>
+                                <th>EXP ที่ต้องใช้</th>
+                                <th>จำนวนครั้ง</th>
+                                <th>EXP ที่เกินมา</th>
+                            </tr>
+                        </thead>
+                        <tbody>`;
+
+            for (let level = 1; level < 100; level++) {
+                const expForNextLevel = Math.pow(level, 2) * 100;
+                const actionsNeeded = Math.ceil(expForNextLevel / expPerAction);
+                const excessExp = (actionsNeeded * expPerAction) - expForNextLevel;
+                tableHTML += `
+                    <tr>
+                        <td>${level} → ${level + 1}</td>
+                        <td>${expForNextLevel.toLocaleString()}</td>
+                        <td>${actionsNeeded.toLocaleString()}</td>
+                        <td>${excessExp.toLocaleString()}</td>
+                    </tr>`;
+            }
+
+            tableHTML += '</tbody></table></div>';
+            resultContainer.innerHTML = tableHTML;
+        }
+    </script>
+</body>
+</html>
