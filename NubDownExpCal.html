@@ -20,6 +20,7 @@
             --success-color: #00b894;
             --danger-color: #ff7675;
             --accent-glow: rgba(108, 92, 231, 0.4);
+            --info-color: #74b9ff;
         }
         *, *::before, *::after { box-sizing: border-box; }
         body {
@@ -76,7 +77,7 @@
             font-size: 2rem;
             letter-spacing: 1px;
         }
-        .input-group, .input-section {
+        .input-group, .control-group {
             margin-bottom: 1.5rem;
             text-align: left;
             position: relative;
@@ -106,6 +107,40 @@
             border-color: var(--primary-color);
             box-shadow: 0 0 0 4px var(--accent-glow);
         }
+        .range-slider-wrapper {
+            position: relative;
+            flex-grow: 1;
+            display: flex;
+            align-items: center;
+        }
+        .range-slider-wrapper input[type="range"] {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 100%;
+            height: 6px;
+            background: var(--border-color);
+            border-radius: 3px;
+            outline: none;
+            cursor: pointer;
+        }
+        .range-slider-wrapper input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 18px;
+            height: 18px;
+            background: white;
+            border: 3px solid var(--primary-color);
+            border-radius: 50%;
+            box-shadow: 0 0 5px var(--accent-glow);
+        }
+        .range-slider-wrapper input[type="range"]::-moz-range-thumb {
+            width: 14px;
+            height: 14px;
+            background: white;
+            border: 3px solid var(--primary-color);
+            border-radius: 50%;
+            box-shadow: 0 0 5px var(--accent-glow);
+        }
         button {
             width: 100%;
             padding: 16px;
@@ -120,10 +155,7 @@
             transition: all 0.3s ease;
             box-shadow: 0 5px 20px rgba(108, 92, 231, 0.3);
         }
-        button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(108, 92, 231, 0.5);
-        }
+        button:hover { transform: translateY(-3px); box-shadow: 0 8px 25px rgba(108, 92, 231, 0.5); }
         .result {
             margin-top: 2rem;
             padding: 1.5rem 2rem;
@@ -146,24 +178,30 @@
             max-width: 600px;
             margin: 0 auto 2.5rem auto;
             display: grid;
+            grid-template-columns: 1fr 1fr;
             gap: 1.5rem;
         }
-        .control-group { text-align: left; }
-        #level-range-label {
-            display: flex;
-            justify-content: space-between;
-            font-weight: 600;
-            margin-bottom: 0.75rem;
-        }
-        #level-range { width: 100%; }
+        .control-group.full-width { grid-column: 1 / -1; }
+        .range-control-group { display: flex; gap: 1rem; align-items: center; }
+        .range-control-group input[type=number] { width: 80px; }
         
+        .dashboard-output-container { height: 60vh; }
         #card-grid-container {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
             gap: 1.5rem;
-            max-height: 60vh;
+            height: 100%;
             overflow-y: auto;
             padding: 10px;
+            align-content: start;
+        }
+        .placeholder-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            font-size: 1.1rem;
+            color: var(--text-muted-color);
         }
         .exp-card {
             background: #2d2d3d;
@@ -176,56 +214,33 @@
             transition: all 0.3s ease;
         }
         .exp-card:hover { transform: translateY(-5px); box-shadow: 0 8px 25px rgba(0,0,0,0.3); }
-        .card-title {
-            font-weight: 700;
-            font-size: 1.2rem;
-            color: white;
-            margin-bottom: 1rem;
-        }
-        .card-main-metric {
-            font-size: 2.5rem;
-            font-weight: 700;
-            color: var(--secondary-color);
-            margin-bottom: 0.5rem;
-            line-height: 1;
-        }
-        .card-main-metric-label {
-            font-size: 0.9rem;
+        .card-title { font-weight: 700; font-size: 1.2rem; color: white; margin-bottom: 1rem; }
+        .card-main-metric { font-size: 2.2rem; font-weight: 700; color: var(--secondary-color); margin-bottom: 0.5rem; line-height: 1; }
+        .card-main-metric-label { font-size: 0.9rem; color: var(--text-muted-color); margin-bottom: 1.2rem; }
+        .card-secondary-info { font-size: 0.9rem; color: var(--text-muted-color); }
+        .card-secondary-info strong { color: var(--info-color); font-weight: 600; }
+        .grind-meter { margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--border-color);}
+        .grind-meter-label { font-size: 0.8rem; font-weight: 600; margin-bottom: 0.5rem; }
+        .meter-bar-bg { width: 100%; height: 8px; background-color: #1e1e2d; border-radius: 4px; overflow: hidden; }
+        .meter-bar-fg { height: 100%; border-radius: 4px; background: linear-gradient(90deg, #6c5ce7, #fd79a8); transition: width 0.5s ease-out; }
+        .card-commentary {
+            font-style: italic;
+            font-size: 0.85rem;
             color: var(--text-muted-color);
-            margin-bottom: 1.5rem;
-        }
-        .card-secondary-info {
-            font-size: 0.9rem;
-            color: var(--text-muted-color);
-        }
-        .grind-meter {
-            margin-top: auto;
-            padding-top: 1rem;
-        }
-        .grind-meter-label {
-            font-size: 0.8rem;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-        }
-        .meter-bar-bg {
-            width: 100%;
-            height: 8px;
-            background-color: #1e1e2d;
-            border-radius: 4px;
-            overflow: hidden;
-        }
-        .meter-bar-fg {
-            height: 100%;
-            border-radius: 4px;
-            background: linear-gradient(90deg, #6c5ce7, #fd79a8);
-            transition: width 0.5s ease-out;
+            margin-top: 0.75rem;
+            text-align: center;
         }
         
+        ::-webkit-scrollbar { width: 12px; }
+        ::-webkit-scrollbar-track { background: var(--background-gradient-end); box-shadow: inset 0 0 5px rgba(0,0,0,0.2); }
+        ::-webkit-scrollbar-thumb { background-color: var(--primary-color); border-radius: 20px; border: 3px solid var(--background-gradient-end); }
+
         @media (max-width: 600px) {
             body { padding: 1rem; }
             .app-container { padding: 1.5rem; }
             h1 { font-size: 1.6rem; }
             .nav-menu .nav-item { font-size: 0.9rem; padding: 10px; }
+            .dashboard-controls { grid-template-columns: 1fr; }
         }
         @keyframes fadeInBody { from { opacity: 0; } to { opacity: 1; } }
         @keyframes viewFadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
@@ -235,12 +250,12 @@
 <body>
     <div class="app-container">
         <nav class="nav-menu">
-            <div id="nav-calculator" class="nav-item active" onclick="showView('calculator')">คำนวณเป้าหมาย</div>
-            <div id="nav-dashboard" class="nav-item" onclick="showView('dashboard')">แดชบอร์ด EXP</div>
+            <div id="nav-calculator" class="nav-item active" onclick="showView('calculator')">คำนวณ EXP สู่เป้าหมาย</div>
+            <div id="nav-dashboard" class="nav-item" onclick="showView('dashboard')">สำรวจข้อมูลเลเวล</div>
         </nav>
 
         <div id="calculator-view" class="view active">
-            <h1>คำนวณเส้นทางสู่เป้าหมาย</h1>
+            <h1>คำนวณ EXP สู่เป้าหมาย</h1>
             <div class="input-group">
                 <label for="currentLevel">เลเวลปัจจุบัน</label>
                 <input type="number" id="currentLevel" min="1" max="99" placeholder="เช่น 50">
@@ -262,25 +277,40 @@
         </div>
 
         <div id="dashboard-view" class="view">
-            <h1>แดชบอร์ด EXP</h1>
+            <h1>สำรวจข้อมูลเลเวล</h1>
             <div class="dashboard-controls">
                 <div class="control-group">
                     <label for="expPerActionDashboard">EXP ที่ได้รับต่อครั้ง</label>
-                    <input type="number" id="expPerActionDashboard" min="1" placeholder="ใส่ค่า EXP แล้วกด 'สร้าง'" oninput="generateExpCards()">
+                    <input type="number" id="expPerActionDashboard" min="1" placeholder="กรุณาใส่ค่า EXP" oninput="generateExpCards()">
                 </div>
-                 <div class="control-group">
-                    <label id="level-range-label" for="level-range"><span>สำรวจช่วงเลเวล</span><span id="range-value-display">1 - 20</span></label>
-                    <input type="range" id="level-range" min="1" max="80" value="1" oninput="updateExpDashboard()">
+                <div class="control-group">
+                    <label for="difficultyThreshold">กี่ครั้งถึงเรียกว่า 'ยาก'?</label>
+                    <input type="number" id="difficultyThreshold" min="1" value="500" oninput="generateExpCards()">
+                </div>
+                 <div class="control-group full-width">
+                     <label for="level-range-start">แสดงข้อมูลตั้งแต่ LV: <span id="start-level-display">1</span></label>
+                     <div class="range-control-group">
+                        <div class="range-slider-wrapper" style="flex-grow: 1;">
+                            <input type="range" id="level-range-start" min="1" max="98" value="1">
+                        </div>
+                        <label for="level-range-size">ระยะ: </label>
+                        <input type="number" id="level-range-size" min="1" max="98" value="20">
+                     </div>
                 </div>
             </div>
-            <div id="card-grid-container">
-                 <p id="result-placeholder">กรอกค่า EXP ที่ได้รับเพื่อสร้างแดชบอร์ด</p>
-            </div>
+            <div id="dashboard-output-container" class="dashboard-output-container"></div>
         </div>
     </div>
 
     <script>
-        const maxPossibleExp = Math.pow(99, 2) * 100;
+        const commentaryTiers = {
+            very_easy: ["แค่ขยับนิ้วก็ผ่านแล้ว", "ง่ายกว่านี้ก็แจกฟรี", "หลับตาทำยังได้", "นี่จริงจังแล้ว?", "หายใจก็ผ่าน", "ง่ายกว่าบทสอนเล่น", "ใช้เท้าเล่นยังไหว", "เด็กอนุบาลก็ทำได้", "นี่วอร์มอัพเหรอ?", "หลับตาข้างนึงยังไหว", "ใช้จอยเท้าเล่นรึเปล่า?", "สไลม์หน้าเมืองยังยากกว่า", "นี่คือบทสอนเล่นใช่ไหม?", "ไม่ต้องใช้สมองเลย", "กดออโต้แล้วไปนอน", "ง่ายจนน่าเบื่อ", "เควสเด็กส่งของ?", "ลมพัดก็ผ่าน", "เอาเวลาไปทำอย่างอื่นดีกว่า", "มดเดินยังเร็วกว่า", "นี่นับเป็นความสำเร็จ?", "ทำไมมันง่ายขนาดนี้", "ไม่ต้องพยายามเลย", "เสียเวลาโหลดแมพมากกว่า"],
+            easy: ["วอร์มอัพเบาๆ", "เหมือนเควสรายวัน", "ยังชิลล์อยู่นะ", "เคี้ยวๆ กลืนๆ", "ฟาร์มเพลินๆ", "ทำไปดูซีรีส์ไป", "เหมือนตีสไลม์หน้าเมือง", "ยังไม่ต้องใช้โพชั่น", "สบายๆ ไม่ต้องคิดมาก", "เหมือนเดินเล่นในสวน", "ยังเหลือเวลาไปทำอย่างอื่น", "เพลงเบาๆ ก็เอาอยู่", "ชิลล์กว่านี้ไม่มีอีกแล้ว", "เหมาะกับการฟาร์มตอนง่วง", "ยังไม่จำเป็นต้องเติมเงิน", "ใช้เวลาไม่นาน", "เหมือนได้มาฟรีๆ", "EXP ไหลมาเทมา", "ภารกิจง่ายๆ", "ยังไม่ต้องเปิดตำรา"],
+            medium: ["เริ่มตึงๆ ละ", "กาแฟแก้วแรกต้องมา", "ได้กลิ่นความเหนื่อยจางๆ", "เข้าสู่ช่วงสาระ", "หมดเวลาเล่นๆ", "เปิดเพลงร็อคได้", "เพื่อนเริ่มทักถาม", "ต้องโฟกัสหน่อย", "เริ่มใช้สมองบ้างแล้ว", "เหมือนการบ้านที่ต้องส่ง", "ความอดทนเริ่มทำงาน", "เริ่มเห็นคุณค่าของ EXP", "ต้องวางแผนนิดหน่อย", "ไม่ใช่เรื่องเล่นๆ แล้ว", "สมาธิต้องมา", "เริ่มมีเหงื่อออกที่มือ", "ของจริงกำลังจะเริ่ม", "เริ่มเข้าใจคำว่าฟาร์ม", "ความสนุกเริ่มลดลง", "ความท้าทายเริ่มปรากฏ"],
+            hard: ["เตรียมกาแฟแก้วที่สอง", "เพื่อนทักว่าหายไปไหน", "เข้าสู่โหมดจริงจัง", "เพลงในหูฟังเริ่มดัง", "ตาเริ่มเบลอ", "ยินดีต้อนรับสู่โลกของผู้จริงจัง", "คำว่า 'พัก' สะกดยังไงนะ?", "ปิดแจ้งเตือนมือถือได้เลย", "เหมือนทำงานพาร์ทไทม์", "ชีวิตเริ่มผูกติดกับหน้าจอ", "เริ่มเห็นภาพหลอนเป็นตัวเลข", "เริ่มคุยกับ NPC รู้เรื่อง", "เวลากินข้าวเริ่มไม่แน่นอน", "เริ่มแยกไม่ออกระหว่างวัน", "ร่างกายต้องการการพักผ่อน", "ความรู้สึกเหมือนแบกหิน", "เริ่มตั้งคำถามกับชีวิต", "ความอดทนคือเพื่อนแท้", "เริ่มเห็นแสงสว่างที่ปลายอุโมงค์...มั้ง?", "ใครบอกว่าเล่นเกมแล้วสบาย"],
+            very_hard: ["นี่เล่นเกมหรือทำงาน?", "ชีวิตแลกเลเวล", "พรุ่งนี้ยังอยู่ดีไหม?", "ใกล้บรรลุอรหันต์", "ค่าไฟเดือนนี้พุ่งแน่", "ครอบครัวยังจำหน้าได้ไหม?", "คนหรือบอท?", "ควรไปพบจิตแพทย์", "นี่คือการฝึกตนขั้นสูงสุด", "คำว่า 'สังคม' คืออะไร?", "เหมือนติดอยู่ในลูปนรก", "เวลานอนคืออะไร?", "เริ่มเห็นยมทูตมารำข้างๆ", "ขายวิญญาณให้เกมไปแล้ว", "ดวงตาเริ่มเป็นส่วนหนึ่งของจอ", "เสียงในหัวเริ่มบอกให้พอ", "เริ่มได้ยินสี", "เริ่มมองเห็นเสียง", "ชีวิตจริงคืออะไร?", "ความว่างเปล่าเริ่มคืบคลาน"],
+            insane: ["ไปพักบ้างก็ได้นะ", "โลกภายนอกยังมีอยู่จริง", "ยินดีด้วย คุณคือตำนาน", "พระเจ้าก็ทำไม่ได้", "ลาออกจากงานมาเล่นเกมเหรอ?", "มนุษย์คนสุดท้ายที่ทำได้", "เรื่องนี้ต้องถูกจารึก", "คุณได้บรรลุแล้ว", "ติดต่อกินเนสส์บุ๊คหรือยัง?", "คุณคือหนึ่งในประวัติศาสตร์", "Developer ยังต้องคารวะ", "ไปแตะพื้นหญ้าบ้างนะ", "คุณคือเหตุผลที่เซิฟเวอร์ทำงานหนัก", "เกมนี้สร้างมาเพื่อคุณ", "คุณคือตำนานที่ยังมีลมหายใจ", "NPC ทั้งหมดรู้จักชื่อคุณ", "คุณคือบอสลับของเกมนี้", "ได้โปรด...ไปนอน", "โลกต้องการคุณกลับมา", "คุณชนะแล้ว... ชนะทุกอย่าง"]
+        };
 
         function showView(viewName) {
             document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
@@ -298,14 +328,14 @@
         function calculateExpToTarget() {
             const currentLevel = parseInt(document.getElementById('currentLevel').value);
             const targetLevel = parseInt(document.getElementById('targetLevel').value);
-            const currentExp = parseInt(document.getElementById('currentExp').value);
+            const currentExp = parseInt(document.getElementById('currentExp').value) || 0;
             const expPerAction = parseInt(document.getElementById('expPerActionCalc').value);
             const resultWrapper = document.getElementById('result-wrapper');
             
             let resultHTML;
             let borderColor = 'var(--danger-color)';
 
-            if (isNaN(currentLevel) || isNaN(targetLevel) || isNaN(currentExp) || isNaN(expPerAction) || expPerAction <= 0) {
+            if (isNaN(currentLevel) || isNaN(targetLevel) || isNaN(expPerAction) || expPerAction <= 0) {
                 resultHTML = '<p style="text-align: center; color: var(--danger-color);">ข้อมูลไม่ถูกต้อง</p>';
             } else if (targetLevel <= currentLevel) {
                 resultHTML = '<p style="text-align: center; color: var(--danger-color);">เลเวลเป้าหมายต้องมากกว่าเลเวลปัจจุบัน</p>';
@@ -332,54 +362,94 @@
             resultWrapper.innerHTML = `<div class="result" style="border-left-color: ${borderColor};">${resultHTML}</div>`;
         }
         
-        function updateExpDashboard() {
-            const rangeSlider = document.getElementById('level-range');
-            const rangeDisplay = document.getElementById('range-value-display');
-            const startLevel = parseInt(rangeSlider.value);
-            const endLevel = Math.min(startLevel + 19, 99);
-            rangeDisplay.textContent = `${startLevel} - ${endLevel}`;
-            generateExpCards();
+        function updateSliderFill(slider) {
+            const min = slider.min;
+            const max = slider.max;
+            const val = slider.value;
+            const percentage = ((val - min) * 100) / (max - min);
+            slider.style.background = `linear-gradient(to right, var(--primary-color) ${percentage}%, var(--border-color) ${percentage}%)`;
+        }
+
+        function setupDashboardControls() {
+            const startSlider = document.getElementById('level-range-start');
+            const sizeInput = document.getElementById('level-range-size');
+            const startDisplay = document.getElementById('start-level-display');
+
+            function updateDashboard() {
+                startDisplay.textContent = startSlider.value;
+                updateSliderFill(startSlider);
+                generateExpCards();
+            }
+            
+            startSlider.addEventListener('input', updateDashboard);
+            sizeInput.addEventListener('input', updateDashboard);
+            updateSliderFill(startSlider);
+        }
+
+        function getDifficultyCommentary(actions, threshold) {
+            let tier;
+            if (actions <= threshold * 0.1) tier = 'very_easy';
+            else if (actions <= threshold * 0.5) tier = 'easy';
+            else if (actions <= threshold) tier = 'medium';
+            else if (actions <= threshold * 2) tier = 'hard';
+            else if (actions <= threshold * 5) tier = 'very_hard';
+            else tier = 'insane';
+            
+            const comments = commentaryTiers[tier];
+            return comments[Math.floor(Math.random() * comments.length)];
         }
 
         function generateExpCards() {
             const expPerAction = parseInt(document.getElementById('expPerActionDashboard').value);
-            const cardContainer = document.getElementById('card-grid-container');
+            const outputContainer = document.getElementById('dashboard-output-container');
 
             if (isNaN(expPerAction) || expPerAction <= 0) {
-                cardContainer.innerHTML = '<p id="result-placeholder" style="color: var(--danger-color);">กรุณาใส่ค่า EXP ที่ได้รับเป็นจำนวนเต็มบวก</p>';
+                outputContainer.innerHTML = '<div class="placeholder-wrapper">กรุณาใส่ค่า EXP ที่ได้รับเป็นจำนวนเต็มบวก</div>';
                 return;
             }
+            
+            let difficultyThreshold = parseInt(document.getElementById('difficultyThreshold').value);
+            if (isNaN(difficultyThreshold) || difficultyThreshold < 1) difficultyThreshold = 500;
 
-            const rangeSlider = document.getElementById('level-range');
-            const startLevel = parseInt(rangeSlider.value);
-            const endLevel = Math.min(startLevel + 19, 99);
+            const startLevel = parseInt(document.getElementById('level-range-start').value);
+            let rangeSize = parseInt(document.getElementById('level-range-size').value);
+            if (isNaN(rangeSize) || rangeSize < 1) rangeSize = 1;
+            const endLevel = Math.min(startLevel + rangeSize - 1, 99);
             
             let cardsHTML = '';
+            
             for (let level = startLevel; level <= endLevel; level++) {
+                if (level > 99) break;
+
                 const expForNextLevel = Math.pow(level, 2) * 100;
                 const actionsNeeded = Math.ceil(expForNextLevel / expPerAction);
-                const grindPercentage = (expForNextLevel / maxPossibleExp) * 100;
+                
+                const grindPercentage = Math.min(100, 70 * Math.pow(actionsNeeded / difficultyThreshold, 2));
+                
+                const commentary = getDifficultyCommentary(actionsNeeded, difficultyThreshold);
 
                 cardsHTML += `
                     <div class="exp-card">
                         <div class="card-title">LV ${level} → ${level + 1}</div>
                         <div class="card-main-metric" title="${actionsNeeded.toLocaleString()} ครั้ง">${formatNumber(actionsNeeded)}</div>
                         <div class="card-main-metric-label">ครั้ง</div>
-                        <div class="card-secondary-info" title="${expForNextLevel.toLocaleString()} EXP">ต้องการ ${formatNumber(expForNextLevel)} EXP</div>
+                        <div class="card-secondary-info">ต้องการ <strong>${expForNextLevel.toLocaleString()}</strong> EXP</div>
                         <div class="grind-meter">
                             <div class="grind-meter-label">ค่าความยาก</div>
                             <div class="meter-bar-bg">
                                 <div class="meter-bar-fg" style="width: ${grindPercentage.toFixed(2)}%;"></div>
                             </div>
+                             <p class="card-commentary">"${commentary}"</p>
                         </div>
                     </div>
                 `;
             }
-            cardContainer.innerHTML = cardsHTML;
+            outputContainer.innerHTML = `<div id="card-grid-container">${cardsHTML}</div>`;
         }
 
         document.addEventListener('DOMContentLoaded', () => {
-             updateExpDashboard();
+             setupDashboardControls();
+             generateExpCards();
         });
 
     </script>
