@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EXP Calculator & Table</title>
+    <title>EXP Calculator & Dashboard</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;600;700&display=swap" rel="stylesheet">
@@ -21,9 +21,7 @@
             --danger-color: #ff7675;
             --accent-glow: rgba(108, 92, 231, 0.4);
         }
-        *, *::before, *::after {
-            box-sizing: border-box;
-        }
+        *, *::before, *::after { box-sizing: border-box; }
         body {
             font-family: 'Sarabun', sans-serif;
             background: linear-gradient(135deg, var(--background-gradient-start), var(--background-gradient-end));
@@ -42,7 +40,7 @@
             border-radius: 20px;
             box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
             width: 100%;
-            max-width: 800px;
+            max-width: 900px;
             text-align: center;
             border: 1px solid var(--border-color);
         }
@@ -102,10 +100,7 @@
             color: var(--text-color);
             transition: all 0.3s ease;
         }
-        input[type="number"]::placeholder {
-            color: var(--text-muted-color);
-            opacity: 0.6;
-        }
+        input[type="number"]::placeholder { color: var(--text-muted-color); opacity: 0.6; }
         input[type="number"]:focus {
             outline: none;
             border-color: var(--primary-color);
@@ -145,63 +140,93 @@
         .result .highlight { font-size: 1.4em; color: white; }
         .view { display: none; }
         .view.active { display: block; animation: viewFadeIn 0.6s ease; }
-        #table-view { max-width: 100%; }
-        .table-view-input .input-section {
+        #calculator-view { max-width: 450px; margin: 0 auto; }
+        
+        .dashboard-controls {
+            max-width: 600px;
+            margin: 0 auto 2.5rem auto;
+            display: grid;
+            gap: 1.5rem;
+        }
+        .control-group { text-align: left; }
+        #level-range-label {
             display: flex;
-            gap: 1rem;
-            max-width: 500px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-        .table-view-input button { width: auto; padding: 14px 30px; }
-        #result-placeholder {
-            text-align: center;
-            color: var(--text-muted-color);
-            padding: 3rem;
-            background-color: rgba(0,0,0,0.15);
-            border-radius: 12px;
-        }
-        .table-container {
-            max-height: 60vh;
-            overflow: auto;
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            background-color: #1e1e2d;
-        }
-        #result-table {
-            width: 100%;
-            border-collapse: collapse;
-            min-width: 600px;
-        }
-        #result-table th, #result-table td {
-            padding: 14px 18px;
-            text-align: right;
-            border-bottom: 1px solid var(--border-color);
-            white-space: nowrap;
-        }
-        #result-table thead th {
-            background-color: #252535;
-            color: #ffffff;
-            position: sticky;
-            top: 0;
-            z-index: 1;
-            text-align: center;
+            justify-content: space-between;
             font-weight: 600;
+            margin-bottom: 0.75rem;
         }
-        #result-table tbody tr { transition: background-color 0.2s ease; }
-        #result-table tbody tr:last-child td { border-bottom: none; }
-        #result-table tbody tr:hover { background-color: #3d3d4d; }
-        #result-table td:first-child { text-align: center; }
-
+        #level-range { width: 100%; }
+        
+        #card-grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 1.5rem;
+            max-height: 60vh;
+            overflow-y: auto;
+            padding: 10px;
+        }
+        .exp-card {
+            background: #2d2d3d;
+            border-radius: 15px;
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            text-align: left;
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+        }
+        .exp-card:hover { transform: translateY(-5px); box-shadow: 0 8px 25px rgba(0,0,0,0.3); }
+        .card-title {
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: white;
+            margin-bottom: 1rem;
+        }
+        .card-main-metric {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--secondary-color);
+            margin-bottom: 0.5rem;
+            line-height: 1;
+        }
+        .card-main-metric-label {
+            font-size: 0.9rem;
+            color: var(--text-muted-color);
+            margin-bottom: 1.5rem;
+        }
+        .card-secondary-info {
+            font-size: 0.9rem;
+            color: var(--text-muted-color);
+        }
+        .grind-meter {
+            margin-top: auto;
+            padding-top: 1rem;
+        }
+        .grind-meter-label {
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        .meter-bar-bg {
+            width: 100%;
+            height: 8px;
+            background-color: #1e1e2d;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        .meter-bar-fg {
+            height: 100%;
+            border-radius: 4px;
+            background: linear-gradient(90deg, #6c5ce7, #fd79a8);
+            transition: width 0.5s ease-out;
+        }
+        
         @media (max-width: 600px) {
             body { padding: 1rem; }
             .app-container { padding: 1.5rem; }
             h1 { font-size: 1.6rem; }
             .nav-menu .nav-item { font-size: 0.9rem; padding: 10px; }
-            .table-view-input .input-section { flex-direction: column; }
-            .table-view-input button { width: 100%; }
         }
-
         @keyframes fadeInBody { from { opacity: 0; } to { opacity: 1; } }
         @keyframes viewFadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes slideUpFadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
@@ -210,15 +235,19 @@
 <body>
     <div class="app-container">
         <nav class="nav-menu">
-            <div id="nav-calculator" class="nav-item active" onclick="showView('calculator')">เครื่องคำนวณ</div>
-            <div id="nav-table" class="nav-item" onclick="showView('table')">ตาราง EXP</div>
+            <div id="nav-calculator" class="nav-item active" onclick="showView('calculator')">คำนวณเป้าหมาย</div>
+            <div id="nav-dashboard" class="nav-item" onclick="showView('dashboard')">แดชบอร์ด EXP</div>
         </nav>
 
         <div id="calculator-view" class="view active">
-            <h1>คำนวณ EXP เพื่อเลเวลอัพ</h1>
+            <h1>คำนวณเส้นทางสู่เป้าหมาย</h1>
             <div class="input-group">
-                <label for="currentLevel">เลเวลปัจจุบัน (1-99)</label>
+                <label for="currentLevel">เลเวลปัจจุบัน</label>
                 <input type="number" id="currentLevel" min="1" max="99" placeholder="เช่น 50">
+            </div>
+             <div class="input-group">
+                <label for="targetLevel">เลเวลเป้าหมาย</label>
+                <input type="number" id="targetLevel" min="2" max="100" placeholder="เช่น 80">
             </div>
             <div class="input-group">
                 <label for="currentExp">EXP ที่มีอยู่</label>
@@ -228,37 +257,47 @@
                 <label for="expPerActionCalc">EXP ที่ได้รับต่อครั้ง</label>
                 <input type="number" id="expPerActionCalc" min="1" placeholder="เช่น 2500">
             </div>
-            <button onclick="calculateExp()">คำนวณ</button>
+            <button onclick="calculateExpToTarget()">คำนวณ</button>
             <div id="result-wrapper"></div>
         </div>
 
-        <div id="table-view" class="view">
-            <h1>ตารางคำนวณ EXP</h1>
-            <div class="table-view-input">
-                <div class="input-section">
-                    <input type="number" id="expPerActionTable" min="1" placeholder="ใส่ EXP ที่ได้รับต่อครั้ง">
-                    <button onclick="generateTable()">สร้างตาราง</button>
+        <div id="dashboard-view" class="view">
+            <h1>แดชบอร์ด EXP</h1>
+            <div class="dashboard-controls">
+                <div class="control-group">
+                    <label for="expPerActionDashboard">EXP ที่ได้รับต่อครั้ง</label>
+                    <input type="number" id="expPerActionDashboard" min="1" placeholder="ใส่ค่า EXP แล้วกด 'สร้าง'" oninput="generateExpCards()">
+                </div>
+                 <div class="control-group">
+                    <label id="level-range-label" for="level-range"><span>สำรวจช่วงเลเวล</span><span id="range-value-display">1 - 20</span></label>
+                    <input type="range" id="level-range" min="1" max="80" value="1" oninput="updateExpDashboard()">
                 </div>
             </div>
-            <div id="result-container">
-                <p id="result-placeholder">กรอกค่า EXP แล้วกด "สร้างตาราง"</p>
+            <div id="card-grid-container">
+                 <p id="result-placeholder">กรอกค่า EXP ที่ได้รับเพื่อสร้างแดชบอร์ด</p>
             </div>
         </div>
     </div>
 
     <script>
-        function showView(viewName) {
-            const views = document.querySelectorAll('.view');
-            const navItems = document.querySelectorAll('.nav-item');
-            views.forEach(v => v.classList.remove('active'));
-            navItems.forEach(n => n.classList.remove('active'));
+        const maxPossibleExp = Math.pow(99, 2) * 100;
 
+        function showView(viewName) {
+            document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
             document.getElementById(`${viewName}-view`).classList.add('active');
             document.getElementById(`nav-${viewName}`).classList.add('active');
         }
 
-        function calculateExp() {
+        function formatNumber(num) {
+            if (num < 1000) return num.toString();
+            if (num < 1000000) return (num / 1000).toFixed(1) + 'K';
+            return (num / 1000000).toFixed(2) + 'M';
+        }
+
+        function calculateExpToTarget() {
             const currentLevel = parseInt(document.getElementById('currentLevel').value);
+            const targetLevel = parseInt(document.getElementById('targetLevel').value);
             const currentExp = parseInt(document.getElementById('currentExp').value);
             const expPerAction = parseInt(document.getElementById('expPerActionCalc').value);
             const resultWrapper = document.getElementById('result-wrapper');
@@ -266,69 +305,83 @@
             let resultHTML;
             let borderColor = 'var(--danger-color)';
 
-            if (isNaN(currentLevel) || isNaN(currentExp) || isNaN(expPerAction) || expPerAction <= 0 || currentLevel < 1 || currentLevel >= 100) {
-                resultHTML = '<p style="text-align: center; color: var(--danger-color);">กรุณากรอกข้อมูลให้ถูกต้อง</p>';
+            if (isNaN(currentLevel) || isNaN(targetLevel) || isNaN(currentExp) || isNaN(expPerAction) || expPerAction <= 0) {
+                resultHTML = '<p style="text-align: center; color: var(--danger-color);">ข้อมูลไม่ถูกต้อง</p>';
+            } else if (targetLevel <= currentLevel) {
+                resultHTML = '<p style="text-align: center; color: var(--danger-color);">เลเวลเป้าหมายต้องมากกว่าเลเวลปัจจุบัน</p>';
             } else {
-                const expForNextLevel = Math.pow(currentLevel, 2) * 100;
-                if (currentExp >= expForNextLevel) {
+                let totalExpNeeded = -currentExp;
+                for (let i = currentLevel; i < targetLevel; i++) {
+                    totalExpNeeded += Math.pow(i, 2) * 100;
+                }
+
+                if (totalExpNeeded <= 0) {
                     borderColor = 'var(--success-color)';
-                    resultHTML = `<p style="text-align: center; color: var(--success-color);">ยินดีด้วย! คุณสามารถอัพเลเวลได้เลย ✨</p>`;
+                    resultHTML = `<p style="text-align: center; color: var(--success-color);">คุณมี EXP เพียงพอที่จะไปถึง LV ${targetLevel} แล้ว</p>`;
                 } else {
-                    const expNeeded = expForNextLevel - currentExp;
-                    const actionsNeeded = Math.ceil(expNeeded / expPerAction);
-                    const totalExpGained = actionsNeeded * expPerAction;
-                    const leftoverExp = (currentExp + totalExpGained) - expForNextLevel;
+                    const actionsNeeded = Math.ceil(totalExpNeeded / expPerAction);
                     borderColor = 'var(--primary-color)';
                     resultHTML = `
-                        <p>EXP สำหรับ LV. <strong>${currentLevel + 1}</strong>: <strong>${expForNextLevel.toLocaleString()}</strong></p>
-                        <p>EXP ที่ยังขาด: <strong>${expNeeded.toLocaleString()}</strong></p>
+                        <p>เส้นทางสู่เลเวล <strong>${targetLevel}</strong> จาก <strong>${currentLevel}</strong></p>
+                        <p>ต้องการ EXP ทั้งหมด: <strong>${totalExpNeeded.toLocaleString()}</strong></p>
                         <hr style="border: none; border-top: 1px solid var(--border-color); margin: 1rem 0;">
-                        <p>ต้องทำอีก: <strong class="highlight">${actionsNeeded.toLocaleString()} ครั้ง</strong></p>
-                        <p>EXP ที่เหลือ/เกิน: <strong>${leftoverExp.toLocaleString()}</strong></p>
+                        <p>ต้องทำอีกทั้งหมด: <strong class="highlight">${actionsNeeded.toLocaleString()} ครั้ง</strong></p>
                     `;
                 }
             }
             resultWrapper.innerHTML = `<div class="result" style="border-left-color: ${borderColor};">${resultHTML}</div>`;
         }
+        
+        function updateExpDashboard() {
+            const rangeSlider = document.getElementById('level-range');
+            const rangeDisplay = document.getElementById('range-value-display');
+            const startLevel = parseInt(rangeSlider.value);
+            const endLevel = Math.min(startLevel + 19, 99);
+            rangeDisplay.textContent = `${startLevel} - ${endLevel}`;
+            generateExpCards();
+        }
 
-        function generateTable() {
-            const expPerAction = parseInt(document.getElementById('expPerActionTable').value);
-            const resultContainer = document.getElementById('result-container');
+        function generateExpCards() {
+            const expPerAction = parseInt(document.getElementById('expPerActionDashboard').value);
+            const cardContainer = document.getElementById('card-grid-container');
 
             if (isNaN(expPerAction) || expPerAction <= 0) {
-                resultContainer.innerHTML = '<p id="result-placeholder" style="color: var(--danger-color);">กรุณาใส่ค่า EXP ที่ได้รับเป็นจำนวนเต็มบวก</p>';
+                cardContainer.innerHTML = '<p id="result-placeholder" style="color: var(--danger-color);">กรุณาใส่ค่า EXP ที่ได้รับเป็นจำนวนเต็มบวก</p>';
                 return;
             }
 
-            let tableHTML = `
-                <div class="table-container">
-                    <table id="result-table">
-                        <thead>
-                            <tr>
-                                <th>เลเวล</th>
-                                <th>EXP ที่ต้องใช้</th>
-                                <th>จำนวนครั้ง</th>
-                                <th>EXP ที่เกินมา</th>
-                            </tr>
-                        </thead>
-                        <tbody>`;
-
-            for (let level = 1; level < 100; level++) {
+            const rangeSlider = document.getElementById('level-range');
+            const startLevel = parseInt(rangeSlider.value);
+            const endLevel = Math.min(startLevel + 19, 99);
+            
+            let cardsHTML = '';
+            for (let level = startLevel; level <= endLevel; level++) {
                 const expForNextLevel = Math.pow(level, 2) * 100;
                 const actionsNeeded = Math.ceil(expForNextLevel / expPerAction);
-                const excessExp = (actionsNeeded * expPerAction) - expForNextLevel;
-                tableHTML += `
-                    <tr>
-                        <td>${level} → ${level + 1}</td>
-                        <td>${expForNextLevel.toLocaleString()}</td>
-                        <td>${actionsNeeded.toLocaleString()}</td>
-                        <td>${excessExp.toLocaleString()}</td>
-                    </tr>`;
-            }
+                const grindPercentage = (expForNextLevel / maxPossibleExp) * 100;
 
-            tableHTML += '</tbody></table></div>';
-            resultContainer.innerHTML = tableHTML;
+                cardsHTML += `
+                    <div class="exp-card">
+                        <div class="card-title">LV ${level} → ${level + 1}</div>
+                        <div class="card-main-metric" title="${actionsNeeded.toLocaleString()} ครั้ง">${formatNumber(actionsNeeded)}</div>
+                        <div class="card-main-metric-label">ครั้ง</div>
+                        <div class="card-secondary-info" title="${expForNextLevel.toLocaleString()} EXP">ต้องการ ${formatNumber(expForNextLevel)} EXP</div>
+                        <div class="grind-meter">
+                            <div class="grind-meter-label">ค่าความยาก</div>
+                            <div class="meter-bar-bg">
+                                <div class="meter-bar-fg" style="width: ${grindPercentage.toFixed(2)}%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+            cardContainer.innerHTML = cardsHTML;
         }
+
+        document.addEventListener('DOMContentLoaded', () => {
+             updateExpDashboard();
+        });
+
     </script>
 </body>
 </html>
