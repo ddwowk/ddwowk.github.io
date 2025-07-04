@@ -1,0 +1,5 @@
+{
+  "name": "Turn-Based Game Damage Calculator",
+  "description": "A tool for game developers to create characters, define their skills (including buffs and debuffs), and simulate turn-based combat to calculate damage and visualize battle outcomes. Includes an AI-powered battle summary feature.",
+  "requestFramePermissions": []
+}
