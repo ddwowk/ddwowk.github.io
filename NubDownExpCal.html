@@ -185,12 +185,12 @@
         .range-control-group { display: flex; gap: 1rem; align-items: center; }
         .range-control-group input[type=number] { width: 80px; }
         
-        .dashboard-output-container { height: 60vh; }
+        .dashboard-output-container { min-height: 60vh; }
         #card-grid-container {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
             gap: 1.5rem;
-            height: 100%;
+            max-height: 60vh;
             overflow-y: auto;
             padding: 10px;
             align-content: start;
@@ -200,6 +200,7 @@
             justify-content: center;
             align-items: center;
             height: 100%;
+            min-height: 200px;
             font-size: 1.1rem;
             color: var(--text-muted-color);
         }
@@ -294,7 +295,7 @@
                             <input type="range" id="level-range-start" min="1" max="98" value="1">
                         </div>
                         <label for="level-range-size">ระยะ: </label>
-                        <input type="number" id="level-range-size" min="1" max="98" value="20">
+                        <input type="number" id="level-range-size" min="1" max="98" value="20" oninput="generateExpCards()">
                      </div>
                 </div>
             </div>
@@ -311,6 +312,29 @@
             very_hard: ["นี่เล่นเกมหรือทำงาน?", "ชีวิตแลกเลเวล", "พรุ่งนี้ยังอยู่ดีไหม?", "ใกล้บรรลุอรหันต์", "ค่าไฟเดือนนี้พุ่งแน่", "ครอบครัวยังจำหน้าได้ไหม?", "คนหรือบอท?", "ควรไปพบจิตแพทย์", "นี่คือการฝึกตนขั้นสูงสุด", "คำว่า 'สังคม' คืออะไร?", "เหมือนติดอยู่ในลูปนรก", "เวลานอนคืออะไร?", "เริ่มเห็นยมทูตมารำข้างๆ", "ขายวิญญาณให้เกมไปแล้ว", "ดวงตาเริ่มเป็นส่วนหนึ่งของจอ", "เสียงในหัวเริ่มบอกให้พอ", "เริ่มได้ยินสี", "เริ่มมองเห็นเสียง", "ชีวิตจริงคืออะไร?", "ความว่างเปล่าเริ่มคืบคลาน"],
             insane: ["ไปพักบ้างก็ได้นะ", "โลกภายนอกยังมีอยู่จริง", "ยินดีด้วย คุณคือตำนาน", "พระเจ้าก็ทำไม่ได้", "ลาออกจากงานมาเล่นเกมเหรอ?", "มนุษย์คนสุดท้ายที่ทำได้", "เรื่องนี้ต้องถูกจารึก", "คุณได้บรรลุแล้ว", "ติดต่อกินเนสส์บุ๊คหรือยัง?", "คุณคือหนึ่งในประวัติศาสตร์", "Developer ยังต้องคารวะ", "ไปแตะพื้นหญ้าบ้างนะ", "คุณคือเหตุผลที่เซิฟเวอร์ทำงานหนัก", "เกมนี้สร้างมาเพื่อคุณ", "คุณคือตำนานที่ยังมีลมหายใจ", "NPC ทั้งหมดรู้จักชื่อคุณ", "คุณคือบอสลับของเกมนี้", "ได้โปรด...ไปนอน", "โลกต้องการคุณกลับมา", "คุณชนะแล้ว... ชนะทุกอย่าง"]
         };
+
+        const expCurve = [
+            100, 132, 175, 240, 315, 2125, 3200, 4475, 5025, 6825,
+            11875, 14225, 16900, 19925, 23325, 27125, 31350, 36025, 41175, 46825,
+            53000, 59750, 67100, 75075, 83700, 93000, 103000, 113725, 125200, 137450,
+            150500, 164375, 179100, 194700, 211200, 228625, 247000, 266350, 286700, 308075,
+            330500, 354000, 378600, 404325, 431200, 459250, 488500, 518975, 550700, 583700,
+            618000, 653625, 690600, 728950, 768700, 809875, 852500, 896600, 942200, 989325,
+            1038000, 1088625, 1141225, 1195825, 1252450, 1311125, 1371875, 1434725, 1499700, 1566825,
+            1636125, 1707625, 1781350, 1857325, 1935575, 2016125, 2099000, 2184225, 2271825, 2361825,
+            2454250, 2549125, 2646475, 2746325, 2848700, 2953625, 3061125, 3171225, 3283950, 3399325
+        ];
+
+        function getExpForLevel(level) {
+            const index = level - 1;
+            if (index >= 0 && index < expCurve.length) {
+                return expCurve[index];
+            }
+            if (expCurve.length > 0) {
+                return expCurve[expCurve.length - 1];
+            }
+            return 0;
+        }
 
         function showView(viewName) {
             document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
@@ -342,7 +366,7 @@
             } else {
                 let totalExpNeeded = -currentExp;
                 for (let i = currentLevel; i < targetLevel; i++) {
-                    totalExpNeeded += Math.pow(i, 2) * 100;
+                    totalExpNeeded += getExpForLevel(i);
                 }
 
                 if (totalExpNeeded <= 0) {
@@ -382,7 +406,7 @@
             }
             
             startSlider.addEventListener('input', updateDashboard);
-            sizeInput.addEventListener('input', updateDashboard);
+            sizeInput.addEventListener('input', updateDashboard); // Added this listener
             updateSliderFill(startSlider);
         }
 
@@ -419,13 +443,11 @@
             let cardsHTML = '';
             
             for (let level = startLevel; level <= endLevel; level++) {
-                if (level > 99) break;
+                if (level >= 100) break; 
 
-                const expForNextLevel = Math.pow(level, 2) * 100;
+                const expForNextLevel = getExpForLevel(level);
                 const actionsNeeded = Math.ceil(expForNextLevel / expPerAction);
-                
                 const grindPercentage = Math.min(100, 70 * Math.pow(actionsNeeded / difficultyThreshold, 2));
-                
                 const commentary = getDifficultyCommentary(actionsNeeded, difficultyThreshold);
 
                 cardsHTML += `
@@ -439,7 +461,7 @@
                             <div class="meter-bar-bg">
                                 <div class="meter-bar-fg" style="width: ${grindPercentage.toFixed(2)}%;"></div>
                             </div>
-                             <p class="card-commentary">"${commentary}"</p>
+                            <p class="card-commentary">"${commentary}"</p>
                         </div>
                     </div>
                 `;
@@ -447,11 +469,15 @@
             outputContainer.innerHTML = `<div id="card-grid-container">${cardsHTML}</div>`;
         }
 
-        document.addEventListener('DOMContentLoaded', () => {
-             setupDashboardControls();
-             generateExpCards();
+        // --- INITIALIZATION ---
+        // เมื่อหน้าเว็บโหลดเสร็จ
+        document.addEventListener('DOMContentLoaded', function() {
+            // ตั้งค่าการทำงานของส่วนควบคุมในแดชบอร์ด (เช่น สไลเดอร์)
+            setupDashboardControls();
+            
+            // สร้างการ์ดข้อมูลเริ่มต้น (จะแสดงข้อความให้กรอก EXP)
+            generateExpCards();
         });
-
     </script>
 </body>
 </html>
